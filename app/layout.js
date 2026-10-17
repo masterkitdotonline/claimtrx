@@ -1,8 +1,6 @@
+
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
-
-
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,21 +13,16 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  metadataBase: new URL("https://masterkit.online"),
+  metadataBase: new URL("https://claimtrx.netlify.app/"),
 
   title: {
     default: "Claim TRX",
     template: "%s | Claim TRX",
-  }
+  },
 
-
-
-
-  
-
-  
-
-  
+  other: {
+    monetag: "5410d19d52e8c03e485aa7aad0b16fd1",
+  },
 };
 
 export default function RootLayout({ children }) {
@@ -39,14 +32,9 @@ export default function RootLayout({ children }) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-       
-
         <main className="flex-1">
           {children}
         </main>
-        
-
-       
       </body>
     </html>
   );

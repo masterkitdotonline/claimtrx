@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import ClaimAd from "@/components/ClaimAd";
 
 const OFFER_URL = "https://uplcm.com/4/12045617";
 
@@ -45,11 +46,7 @@ export default function ClaimPage() {
       return;
     }
 
-    // Open synchronously to reduce popup-blocking issues.
-    const offerTab = window.open(
-      "about:blank",
-      "_blank"
-    );
+    const offerTab = window.open("about:blank", "_blank");
 
     setLoading(true);
     setMessage("");
@@ -58,8 +55,12 @@ export default function ClaimPage() {
     try {
       const response = await fetch("/api/claim", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim() }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email.trim(),
+        }),
       });
 
       const data = await response.json();
@@ -73,7 +74,9 @@ export default function ClaimPage() {
       }
 
       if (!response.ok) {
-        setMessage(data.error || "Claim failed. Please try again.");
+        setMessage(
+          data.error || "Claim failed. Please try again."
+        );
         return;
       }
 
@@ -81,11 +84,15 @@ export default function ClaimPage() {
       setMessage(
         `Success! ${data.amount} TRX sent to your FaucetPay account.`
       );
+
       setStarted(false);
       setSeconds(0);
       setEmail("");
     } catch {
-      if (offerTab && !offerTab.closed) offerTab.close();
+      if (offerTab && !offerTab.closed) {
+        offerTab.close();
+      }
+
       setMessage("Network error. Please try again.");
     } finally {
       setLoading(false);
@@ -97,7 +104,8 @@ export default function ClaimPage() {
   return (
     <main className="min-h-screen bg-[#080d18] px-4 py-12 text-white sm:py-20">
       <div className="mx-auto max-w-3xl">
-        <div className="mb-10 text-center">
+        {/* Header */}
+        <div className="mb-8 text-center">
           <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl border border-red-400/20 bg-red-500/10 text-3xl font-bold text-red-400">
             T
           </div>
@@ -107,7 +115,8 @@ export default function ClaimPage() {
           </p>
 
           <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">
-            Claim Free <span className="text-red-400">TRX</span>
+            Claim Free{" "}
+            <span className="text-red-400">TRX</span>
           </h1>
 
           <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-slate-400 sm:text-base">
@@ -116,24 +125,42 @@ export default function ClaimPage() {
           </p>
         </div>
 
+        {/* Ad 1: Below heading */}
+        <ClaimAd />
+
+        {/* Main Claim Card */}
         <div className="rounded-3xl border border-white/10 bg-[#101827] p-6 shadow-2xl sm:p-10">
+          {/* Reward and Timer */}
           <div className="grid grid-cols-2 gap-4">
             <div className="rounded-2xl border border-white/5 bg-white/[0.03] p-4">
-              <p className="text-sm text-slate-400">Reward range</p>
+              <p className="text-sm text-slate-400">
+                Reward range
+              </p>
+
               <p className="mt-2 text-2xl font-bold text-emerald-400">
                 1–5 TRX
               </p>
             </div>
 
             <div className="rounded-2xl border border-white/5 bg-white/[0.03] p-4">
-              <p className="text-sm text-slate-400">Claim timer</p>
-              <p className="mt-2 text-2xl font-bold">{time}</p>
+              <p className="text-sm text-slate-400">
+                Claim timer
+              </p>
+
+              <p className="mt-2 text-2xl font-bold">
+                {time}
+              </p>
             </div>
           </div>
 
+          {/* Ad 2: Inside claim card */}
+          <ClaimAd />
+
+          {/* Initial Claim Button */}
           {!started && (
-            <div className="mt-8 text-center">
+            <div className="text-center">
               <button
+                type="button"
                 onClick={startClaim}
                 disabled={loading}
                 className="w-full rounded-xl bg-red-500 px-6 py-4 text-base font-bold text-white transition hover:bg-red-600 disabled:opacity-50 sm:text-lg"
@@ -142,18 +169,22 @@ export default function ClaimPage() {
               </button>
 
               <p className="mt-3 text-xs text-slate-500">
-                Opens our offer in a new tab and starts the 30-second timer.
+                Opens our offer in a new tab and starts the
+                30-second timer.
               </p>
             </div>
           )}
 
+          {/* Countdown */}
           {started && seconds > 0 && (
-            <div className="mt-8 rounded-2xl border border-red-400/20 bg-red-500/5 p-6 text-center">
+            <div className="rounded-2xl border border-red-400/20 bg-red-500/5 p-6 text-center">
               <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full border-4 border-red-400/20 text-2xl font-bold text-red-400">
                 {seconds}s
               </div>
 
-              <h2 className="text-xl font-bold">Please wait...</h2>
+              <h2 className="text-xl font-bold">
+                Please wait...
+              </h2>
 
               <p className="mt-2 text-sm text-slate-400">
                 Keep this page open. Your claim form will
@@ -171,14 +202,20 @@ export default function ClaimPage() {
             </div>
           )}
 
+          {/* FaucetPay Form */}
           {started && seconds === 0 && (
-            <form onSubmit={submitClaim} className="mt-8 space-y-5">
+            <form
+              onSubmit={submitClaim}
+              className="space-y-5"
+            >
               <div className="rounded-2xl border border-emerald-400/20 bg-emerald-500/5 p-5">
                 <h2 className="text-xl font-bold text-emerald-400">
                   Your claim is ready!
                 </h2>
+
                 <p className="mt-2 text-sm text-slate-400">
-                  Enter the email linked to your FaucetPay account.
+                  Enter the email linked to your FaucetPay
+                  account.
                 </p>
               </div>
 
@@ -192,6 +229,7 @@ export default function ClaimPage() {
 
                 <input
                   id="email"
+                  name="email"
                   type="email"
                   required
                   maxLength={254}
@@ -208,14 +246,18 @@ export default function ClaimPage() {
                 disabled={loading}
                 className="w-full rounded-xl bg-emerald-500 px-6 py-4 font-bold text-white transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                {loading ? "Processing Claim..." : "Claim TRX Now"}
+                {loading
+                  ? "Processing Claim..."
+                  : "Claim TRX Now"}
               </button>
             </form>
           )}
 
+          {/* Claim Status */}
           {message && (
             <div
               role="status"
+              aria-live="polite"
               className={`mt-5 rounded-xl border p-4 text-sm ${
                 success
                   ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-400"
@@ -226,8 +268,12 @@ export default function ClaimPage() {
             </div>
           )}
 
+          {/* Instructions */}
           <div className="mt-8 border-t border-white/10 pt-6">
-            <h3 className="font-semibold">How it works</h3>
+            <h3 className="font-semibold">
+              How it works
+            </h3>
+
             <ol className="mt-4 space-y-3 text-sm text-slate-400">
               <li>01. Click the claim button.</li>
               <li>02. Wait for the 30-second countdown.</li>
@@ -237,6 +283,10 @@ export default function ClaimPage() {
           </div>
         </div>
 
+        {/* Ad 3: Below claim card */}
+        <ClaimAd />
+
+        {/* Disclaimer */}
         <p className="mt-6 text-center text-xs leading-5 text-slate-500">
           Rewards depend on faucet availability and successful
           payment processing. Never share your FaucetPay password
