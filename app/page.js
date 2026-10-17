@@ -3,6 +3,7 @@
 
 import { useEffect, useState } from "react";
 import ClaimAd from "@/components/ClaimAd";
+import MonetagBanner from "@/components/MonetagBanner";
 
 const OFFER_URL = "https://uplcm.com/4/12045617";
 
@@ -154,7 +155,7 @@ export default function ClaimPage() {
           </div>
 
           {/* Ad 2: Inside claim card */}
-          <ClaimAd />
+          <MonetagBanner />
 
           {/* Initial Claim Button */}
           {!started && (
@@ -268,6 +269,8 @@ export default function ClaimPage() {
             </div>
           )}
 
+          <MonetagBanner />
+
           {/* Instructions */}
           <div className="mt-8 border-t border-white/10 pt-6">
             <h3 className="font-semibold">
@@ -283,8 +286,7 @@ export default function ClaimPage() {
           </div>
         </div>
 
-        {/* Ad 3: Below claim card */}
-        <ClaimAd />
+        <MonetagBanner />
 
         {/* Disclaimer */}
         <p className="mt-6 text-center text-xs leading-5 text-slate-500">
@@ -292,6 +294,7 @@ export default function ClaimPage() {
           payment processing. Never share your FaucetPay password
           or API credentials.
         </p>
+        <MonetagBanner />
       </div>
     </main>
   );
