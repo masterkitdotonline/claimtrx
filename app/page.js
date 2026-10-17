@@ -270,6 +270,7 @@ export default function ClaimPage() {
           )}
 
           <MonetagBanner />
+          <ClaimAd />
 
           {/* Instructions */}
           <div className="mt-8 border-t border-white/10 pt-6">
@@ -294,6 +295,10 @@ export default function ClaimPage() {
           payment processing. Never share your FaucetPay password
           or API credentials.
         </p>
+        <MonetagBanner />
+        <ClaimAd />
+        <MonetagBanner />
+        <MonetagBanner />
         <MonetagBanner />
       </div>
     </main>
